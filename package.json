@@ -1,0 +1,14 @@
+{
+  "name": "Technical Test",
+  "version": "1.0.0",
+  "packageManager": "yarn@3.1.1",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Ludovic Bonheur",
+  "dependencies": {
+    "express": "^4.17.2"
+  }
+}
