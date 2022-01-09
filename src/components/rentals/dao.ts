@@ -1,24 +1,11 @@
 import Rental from "./model"
-import { parse } from 'csv-parse';
 import { nanoid } from 'nanoid'
-
-const parser = parse({
-  delimiter: ':'
-});
 
 class RentalDao {
     rentals: Array<Rental> = [];
 
     constructor() {
         console.log("New instance of rental created");
-
-        parser.on('readable',  () => {
-            let rental;
-            while ((rental = parser.read()) !== null) {
-                this.rentals.push(rental);
-            }
-        });
-        parser.end();
     }
 
     async addRental(rental: Rental) {
@@ -29,7 +16,7 @@ class RentalDao {
 
     async getRentals() {
         return this.rentals;
-    }   
+    }
 
     async getRentalById(rentalId: string) {
         return this.rentals.find((rental: { id: string }) => rental.id === rentalId);
@@ -66,7 +53,7 @@ class RentalDao {
         }
         this.rentals.splice(objIndex, 1, currentRental);
         return `${rental.id} patched`;
-    }    
+    }
 }
 
 export default new RentalDao();
