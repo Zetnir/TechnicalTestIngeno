@@ -1,8 +1,8 @@
-import Rental from "../models/rentals.model";
+import Rental, { RentalFilter } from "../models/rentals.model";
 import { v1 as uuid } from "uuid";
 import DatabaseService from "../../../db";
 
-class RentalDao {
+class RentalsDao {
   rentals: Array<Rental> = [];
   pageStep: number = 50;
 
@@ -36,18 +36,31 @@ class RentalDao {
     });
   }
 
-  async getRentals(limit: number, page: number): Promise<Rental[]> {
+  async getRentals(
+    limit: number,
+    page: number,
+    query: RentalFilter
+  ): Promise<Rental[]> {
     const { connection, database } = DatabaseService;
     const limit_min = page * this.pageStep;
     const limit_max = limit_min + limit;
+    let sql = `SELECT * FROM ${database}.rentals `;
+
+    sql += "WHERE 1 ";
+    sql += query.max_price ? `AND price <= ${query.max_price} ` : "";
+    sql += query.min_nb_beds ? `AND nb_beds >= ${query.min_nb_beds} ` : "";
+    sql += query.min_price ? `AND price >= ${query.min_price} ` : "";
+    sql += query.postalcode
+      ? `AND postalcode LIKE '${query.postalcode}%' `
+      : "";
+
+    sql += `LIMIT ${limit_min}, ${limit_max} `;
+
     return new Promise((resolve, reject) => {
-      connection.query(
-        `SELECT * FROM ${database}.rentals LIMIT ${limit_min}, ${limit_max}`,
-        (err, result) => {
-          if (err) reject(err);
-          else resolve(result as Rental[]);
-        }
-      );
+      connection.query(sql, (err, result) => {
+        if (err) reject(err);
+        else resolve(result as Rental[]);
+      });
     });
   }
 
@@ -99,8 +112,7 @@ class RentalDao {
       item.push((rental as any)[property]);
     }
     sql = sql.slice(0, sql.length - 2);
-    sql += `WHERE id = "${rentalId}"`;
-    console.log(sql);
+    sql += ` WHERE id = "${rentalId}"`;
 
     return new Promise((resolve, reject) => {
       connection.query(sql, item, (err, result) => {
@@ -124,4 +136,4 @@ class RentalDao {
   }
 }
 
-export default new RentalDao();
+export default new RentalsDao();

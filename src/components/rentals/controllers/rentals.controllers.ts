@@ -1,9 +1,24 @@
 import express from "express";
-import RentalService from "../services/rentals.service";
+import { RentalFilter } from "../models/rentals.model";
+import RentalsService from "../services/rentals.service";
 
 class RentalsController {
   async listRentals(req: express.Request, res: express.Response) {
-    await RentalService.list(100, 0)
+    const query: RentalFilter = {
+      min_nb_beds: req.query.min_nb_beds
+        ? parseInt(req.query.min_nb_beds as string)
+        : undefined,
+      postalcode: req.query.postalcode
+        ? (req.query.postalcode as string)
+        : undefined,
+      min_price: req.query.min_price
+        ? parseInt(req.query.min_price as string)
+        : undefined,
+      max_price: req.query.max_price
+        ? parseInt(req.query.max_price as string)
+        : undefined,
+    };
+    await RentalsService.list(100, 0, query)
       .then((result) => {
         res.status(200).send(result);
       })
@@ -13,7 +28,7 @@ class RentalsController {
   }
 
   async getRentalById(req: express.Request, res: express.Response) {
-    await RentalService.readById(req.params.id)
+    await RentalsService.readById(req.params.id)
       .then((result) => {
         res.status(200).send(result);
       })
@@ -23,7 +38,7 @@ class RentalsController {
   }
 
   async createRental(req: express.Request, res: express.Response) {
-    await RentalService.create(req.body)
+    await RentalsService.create(req.body)
       .then((result) => {
         res.status(201).send(result);
       })
@@ -33,7 +48,7 @@ class RentalsController {
   }
 
   async patch(req: express.Request, res: express.Response) {
-    await RentalService.patchById(req.params.id, req.body)
+    await RentalsService.patchById(req.params.id, req.body)
       .then((result) => {
         res.status(201).send(result);
       })
@@ -43,7 +58,7 @@ class RentalsController {
   }
 
   async put(req: express.Request, res: express.Response) {
-    await RentalService.putById(req.params.id, req.body)
+    await RentalsService.putById(req.params.id, req.body)
       .then((result) => {
         res.status(201).send(result);
       })
@@ -53,7 +68,7 @@ class RentalsController {
   }
 
   async removeRental(req: express.Request, res: express.Response) {
-    await RentalService.deleteById(req.params.id)
+    await RentalsService.deleteById(req.params.id)
       .then((result) => {
         res.status(204).send(result);
       })

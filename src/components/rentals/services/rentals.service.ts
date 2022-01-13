@@ -1,8 +1,8 @@
 import RentalsDao from "../daos/rentals.dao";
-import Rental from "../models/rentals.model";
+import Rental, { RentalFilter } from "../models/rentals.model";
 import { CRUD } from "../../../common/interfaces/crud.interface";
 
-class UsersService implements CRUD {
+class RentalsService implements CRUD {
   async create(rental: Rental): Promise<string> {
     return RentalsDao.addRental(rental);
   }
@@ -11,8 +11,12 @@ class UsersService implements CRUD {
     return RentalsDao.removeRentalById(id);
   }
 
-  async list(limit: number, page: number): Promise<Rental[]> {
-    return RentalsDao.getRentals(limit, page);
+  async list(
+    limit: number,
+    page: number,
+    query: RentalFilter
+  ): Promise<Rental[]> {
+    return RentalsDao.getRentals(limit, page, query);
   }
 
   async patchById(id: string, resource: Rental): Promise<string> {
@@ -28,4 +32,4 @@ class UsersService implements CRUD {
   }
 }
 
-export default new UsersService();
+export default new RentalsService();
