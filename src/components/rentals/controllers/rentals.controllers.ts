@@ -13,28 +13,53 @@ class RentalsController {
   }
 
   async getRentalById(req: express.Request, res: express.Response) {
-    const rental = await RentalService.readById(req.params.id);
-    res.status(200).send(rental);
+    await RentalService.readById(req.params.id)
+      .then((result) => {
+        res.status(200).send(result);
+      })
+      .catch((err) => {
+        throw err;
+      });
   }
 
   async createRental(req: express.Request, res: express.Response) {
-    const rentalId = await RentalService.create(req.body);
-    res.status(201).send({ id: rentalId });
+    await RentalService.create(req.body)
+      .then((result) => {
+        res.status(201).send(result);
+      })
+      .catch((err) => {
+        throw err;
+      });
   }
 
   async patch(req: express.Request, res: express.Response) {
-    console.log(await RentalService.patchById(req.params.id, req.body));
-    res.status(200).send("Item modified");
+    await RentalService.patchById(req.params.id, req.body)
+      .then((result) => {
+        res.status(201).send(result);
+      })
+      .catch((err) => {
+        throw err;
+      });
   }
 
   async put(req: express.Request, res: express.Response) {
-    console.log(await RentalService.putById(req.params.id, req.body));
-    res.status(200).send("Item replaced");
+    await RentalService.putById(req.params.id, req.body)
+      .then((result) => {
+        res.status(201).send(result);
+      })
+      .catch((err) => {
+        throw err;
+      });
   }
 
   async removeRental(req: express.Request, res: express.Response) {
-    console.log(await RentalService.deleteById(req.params.id));
-    res.status(204).send();
+    await RentalService.deleteById(req.params.id)
+      .then((result) => {
+        res.status(204).send(result);
+      })
+      .catch((err) => {
+        throw err;
+      });
   }
 }
 

@@ -29,16 +29,16 @@ export class RentalsRoutes extends CommonRoutesConfig {
         }
       )
       .get((req: express.Request, res: express.Response) => {
-        res.status(200).send(`GET requested for id ${req.params.id}`);
+        RentalsController.getRentalById(req, res);
       })
       .put((req: express.Request, res: express.Response) => {
-        res.status(200).send(`PUT requested for id ${req.params.id}`);
+        RentalsController.put(req, res);
       })
       .patch((req: express.Request, res: express.Response) => {
-        res.status(200).send(`PATCH requested for id ${req.params.id}`);
+        RentalsController.patch(req, res);
       })
       .delete((req: express.Request, res: express.Response) => {
-        res.status(200).send(`DELETE requested for id ${req.params.id}`);
+        RentalsController.removeRental(req, res);
       });
 
     return this.app;
