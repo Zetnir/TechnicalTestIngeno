@@ -11,12 +11,8 @@ class RentalsService implements CRUD {
     return RentalsDao.removeRentalById(id);
   }
 
-  async list(
-    limit: number,
-    page: number,
-    query: RentalFilter
-  ): Promise<Rental[]> {
-    return RentalsDao.getRentals(limit, page, query);
+  async list(query: RentalFilter): Promise<Rental[]> {
+    return RentalsDao.getRentals(query);
   }
 
   async patchById(id: string, resource: Rental): Promise<string> {

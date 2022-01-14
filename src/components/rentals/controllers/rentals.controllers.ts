@@ -17,8 +17,11 @@ class RentalsController {
       max_price: req.query.max_price
         ? parseInt(req.query.max_price as string)
         : undefined,
+      // Default value for page and limit because not needed
+      page: 0,
+      limit: 100,
     };
-    await RentalsService.list(100, 0, query)
+    await RentalsService.list(query)
       .then((result) => {
         res.status(200).send(result);
       })

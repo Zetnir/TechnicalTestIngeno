@@ -36,14 +36,10 @@ class RentalsDao {
     });
   }
 
-  async getRentals(
-    limit: number,
-    page: number,
-    query: RentalFilter
-  ): Promise<Rental[]> {
+  async getRentals(query: RentalFilter): Promise<Rental[]> {
     const { connection, database } = DatabaseService;
-    const limit_min = page * this.pageStep;
-    const limit_max = limit_min + limit;
+    const limit_min = query.page * this.pageStep;
+    const limit_max = limit_min + query.limit;
     let sql = `SELECT * FROM ${database}.rentals `;
 
     sql += "WHERE 1 ";
@@ -56,10 +52,13 @@ class RentalsDao {
 
     sql += `LIMIT ${limit_min}, ${limit_max} `;
 
+    console.log(sql);
     return new Promise((resolve, reject) => {
       connection.query(sql, (err, result) => {
         if (err) reject(err);
-        else resolve(result as Rental[]);
+        else {
+          resolve(result as Rental[]);
+        }
       });
     });
   }

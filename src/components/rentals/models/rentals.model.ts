@@ -11,6 +11,8 @@ export default interface Rental {
 }
 
 export interface RentalFilter {
+  limit: number;
+  page: number;
   min_nb_beds: number | undefined;
   postalcode: string | undefined;
   min_price: number | undefined;
