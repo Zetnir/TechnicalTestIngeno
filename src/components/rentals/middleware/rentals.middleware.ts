@@ -7,7 +7,6 @@ const isNumerical = (value: string) => {
 };
 
 const isAlphanumerical = (value: string) => {
-  console.log(value);
   return /^[0-9a-zA-Z\-\_]+$/.test(value);
 };
 class RentalsMiddleware {
@@ -41,10 +40,10 @@ class RentalsMiddleware {
     let emptyErrors: string[] = [];
     const message = { errors: emptyErrors };
     if (query) {
-      if (!isAlphanumerical) console.log("not alphanumerical");
-      message.errors.push(
-        "The postalcode mask filter is not in the right format (Alphanumerical with _ character allowed)"
-      );
+      if (!isAlphanumerical)
+        message.errors.push(
+          "The postalcode mask filter is not in the right format (Alphanumerical with _ character allowed)"
+        );
       if (query.length !== postalcodeLength)
         message.errors.push(
           `The postalcode mask length should be ${postalcodeLength} characters`

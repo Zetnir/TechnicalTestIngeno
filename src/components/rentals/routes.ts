@@ -30,41 +30,26 @@ export class RentalsRoutes extends CommonRoutesConfig {
 
     this.app
       .route("/rentals/:id")
-      .all(
-        (
-          req: express.Request,
-          res: express.Response,
-          next: express.NextFunction
-        ) => {
-          RentalsMiddleware.validateId(req, res);
-          next();
-        }
+      .all(RentalsMiddleware.validateId)
+      .get(RentalsController.getRentalById)
+      .put(
+        RentalsMiddleware.validateRequiredRentalProperties,
+        RentalsMiddleware.validateNbBaths,
+        RentalsMiddleware.validateNbBeds,
+        RentalsMiddleware.validatePostalcode,
+        RentalsMiddleware.validatePrice,
+        RentalsMiddleware.validateRating,
+        RentalsController.put
       )
-      .get((req: express.Request, res: express.Response) => {
-        RentalsController.getRentalById(req, res);
-      })
-      .put((req: express.Request, res: express.Response) => {
-        RentalsMiddleware.validateRequiredRentalProperties(req, res);
-        RentalsMiddleware.validateNbBaths(req, res);
-        RentalsMiddleware.validateNbBeds(req, res);
-        RentalsMiddleware.validatePostalcode(req, res);
-        RentalsMiddleware.validatePrice(req, res);
-        RentalsMiddleware.validateRating(req, res);
-
-        RentalsController.put(req, res);
-      })
-      .patch((req: express.Request, res: express.Response) => {
-        RentalsMiddleware.validateNbBaths(req, res);
-        RentalsMiddleware.validateNbBeds(req, res);
-        RentalsMiddleware.validatePostalcode(req, res);
-        RentalsMiddleware.validatePrice(req, res);
-        RentalsMiddleware.validateRating(req, res);
-
-        RentalsController.patch(req, res);
-      })
-      .delete((req: express.Request, res: express.Response) => {
-        RentalsController.removeRental(req, res);
-      });
+      .patch(
+        RentalsMiddleware.validateNbBaths,
+        RentalsMiddleware.validateNbBeds,
+        RentalsMiddleware.validatePostalcode,
+        RentalsMiddleware.validatePrice,
+        RentalsMiddleware.validateRating,
+        RentalsController.patch
+      )
+      .delete(RentalsController.removeRental);
 
     return this.app;
   }

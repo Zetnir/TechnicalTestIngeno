@@ -4,7 +4,7 @@ import DatabaseService from "../../../db";
 
 class RentalsDao {
   rentals: Array<Rental> = [];
-  pageStep: number = 50;
+  //pageStep: number = 50;
 
   constructor() {
     console.log("New instance of rental   created");
@@ -38,8 +38,8 @@ class RentalsDao {
 
   async getRentals(query: RentalFilter): Promise<Rental[]> {
     const { connection, database } = DatabaseService;
-    const limit_min = query.page * this.pageStep;
-    const limit_max = limit_min + query.limit;
+    //const limit_min = query.page * this.pageStep;
+    //const limit_max = limit_min + query.limit;
     let sql = `SELECT * FROM ${database}.rentals `;
 
     sql += "WHERE 1 ";
@@ -50,9 +50,7 @@ class RentalsDao {
       ? `AND postalcode LIKE '${query.postalcode}%' `
       : "";
 
-    sql += `LIMIT ${limit_min}, ${limit_max} `;
-
-    console.log(sql);
+    //sql += `LIMIT ${limit_min}, ${limit_max} `;
     return new Promise((resolve, reject) => {
       connection.query(sql, (err, result) => {
         if (err) reject(err);
