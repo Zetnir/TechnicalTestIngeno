@@ -15,15 +15,15 @@ class RentalsMiddleware {
     res: express.Response,
     next: express.NextFunction
   ) {
-    const query = req.query.min_nb_beds;
+    const query = req.query.min_nb_beds as string;
     let emptyErrors: string[] = [];
     const message = { errors: emptyErrors };
     if (query) {
-      if (!isNumerical(query as string))
+      if (!isNumerical(query))
         message.errors.push(
           "The minimum number of beds filter is not a number"
         );
-      if (parseInt(query as string) < 0)
+      if (parseInt(query) < 0)
         message.errors.push("The minimum number of beds filter is negative");
 
       if (message.errors.length > 0) return res.status(400).send(message);
@@ -40,7 +40,7 @@ class RentalsMiddleware {
     let emptyErrors: string[] = [];
     const message = { errors: emptyErrors };
     if (query) {
-      if (!isAlphanumerical)
+      if (!isAlphanumerical(query))
         message.errors.push(
           "The postalcode mask filter is not in the right format (Alphanumerical with _ character allowed)"
         );
@@ -126,9 +126,8 @@ class RentalsMiddleware {
     const id = req.params.id;
     let emptyErrors: string[] = [];
     const message = { errors: emptyErrors };
-    if (req.params) {
-      if (id == undefined) message.errors.push("Missing value id parameter");
-      if (!isAlphanumerical(id))
+    if (id) {
+      if (!isAlphanumerical(id) || id.length != 36)
         message.errors.push("Id parameter doesn't match format");
     } else message.errors.push("Missing request parameter");
 
@@ -141,19 +140,18 @@ class RentalsMiddleware {
     res: express.Response,
     next: express.NextFunction
   ) {
-    const rating = req.body.rating;
+    const rating = req.body.rating as string;
     let emptyErrors: string[] = [];
     const message = { errors: emptyErrors };
 
-    if (req.body) {
-      if (rating == undefined)
-        message.errors.push("Missing value property rating");
-      if (rating < 0) message.errors.push("The rating value is negative");
+    if (rating) {
+      if (parseInt(rating) < 0)
+        message.errors.push("The rating value is negative");
       if (!isNumerical(rating as string))
         message.errors.push("The rating value is not a number");
-      if (message.errors.length > 0) return res.status(400).send(message);
-      next();
     }
+    if (message.errors.length > 0) return res.status(400).send(message);
+    next();
   }
 
   validatePrice(
@@ -161,19 +159,18 @@ class RentalsMiddleware {
     res: express.Response,
     next: express.NextFunction
   ) {
-    const price = req.body.price;
+    const price = req.body.price as string;
     let emptyErrors: string[] = [];
     const message = { errors: emptyErrors };
 
-    if (req.body) {
-      if (price == undefined)
-        message.errors.push("Missing value property price");
-      if (price < 0) message.errors.push("The price value is negative");
-      if (!isNumerical(price as string))
+    if (price) {
+      if (parseInt(price) < 0)
+        message.errors.push("The price value is negative");
+      if (!isNumerical(price))
         message.errors.push("The price value is not a number");
-      if (message.errors.length > 0) return res.status(400).send(message);
-      next();
     }
+    if (message.errors.length > 0) return res.status(400).send(message);
+    next();
   }
 
   validatePostalcode(
@@ -181,22 +178,20 @@ class RentalsMiddleware {
     res: express.Response,
     next: express.NextFunction
   ) {
-    const postalcode = req.body.postalcode;
+    const postalcode = req.body.postalcode as string;
     let emptyErrors: string[] = [];
     const message = { errors: emptyErrors };
 
-    if (req.body) {
-      if (postalcode == undefined)
-        message.errors.push("Missing value property postalcode");
-      if (!isAlphanumerical(postalcode as string))
+    if (postalcode) {
+      if (!isAlphanumerical(postalcode))
         message.errors.push("The postalcode value is not alphanumerical");
-      if ((postalcode as string).length !== postalcodeLength)
+      if (postalcode.length !== postalcodeLength)
         message.errors.push(
           `The postalcode length should be ${postalcodeLength} characters`
         );
-      if (message.errors.length > 0) return res.status(400).send(message);
-      next();
     }
+    if (message.errors.length > 0) return res.status(400).send(message);
+    next();
   }
 
   validateNbBaths(
@@ -204,18 +199,17 @@ class RentalsMiddleware {
     res: express.Response,
     next: express.NextFunction
   ) {
-    const nbBaths = req.body.nb_baths;
+    const nbBaths = req.body.nb_baths as string;
     let emptyErrors: string[] = [];
     const message = { errors: emptyErrors };
 
-    if (req.body) {
-      if (nbBaths == undefined)
-        message.errors.push("Missing value property nb_baths");
-      if (nbBaths < 0) message.errors.push("The nb_baths value is negative");
-      if (!isNumerical(nbBaths as string))
+    if (nbBaths) {
+      if (parseInt(nbBaths) < 0)
+        message.errors.push("The nb_baths value is negative");
+      if (!isNumerical(nbBaths))
         message.errors.push("The nb_baths value is not a number");
-      if (message.errors.length > 0) return res.status(400).send(message);
     }
+    if (message.errors.length > 0) return res.status(400).send(message);
     next();
   }
 
@@ -224,18 +218,17 @@ class RentalsMiddleware {
     res: express.Response,
     next: express.NextFunction
   ) {
-    const nbBeds = req.body.nb_beds;
+    const nbBeds = req.body.nb_beds as string;
     let emptyErrors: string[] = [];
     const message = { errors: emptyErrors };
 
-    if (req.body) {
-      if (nbBeds == undefined)
-        message.errors.push("Missing value property nb_beds");
-      if (nbBeds < 0) message.errors.push("The nb_beds value is negative");
-      if (!isNumerical(nbBeds as string))
+    if (nbBeds) {
+      if (parseInt(nbBeds) < 0)
+        message.errors.push("The nb_beds value is negative");
+      if (!isNumerical(nbBeds))
         message.errors.push("The nb_beds value is not a number");
-      if (message.errors.length > 0) return res.status(400).send(message);
     }
+    if (message.errors.length > 0) return res.status(400).send(message);
     next();
   }
 }

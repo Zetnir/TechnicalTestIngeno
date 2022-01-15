@@ -43,12 +43,18 @@ class RentalsDao {
     let sql = `SELECT * FROM ${database}.rentals `;
 
     sql += "WHERE 1 ";
-    sql += query.max_price ? `AND price <= ${query.max_price} ` : "";
-    sql += query.min_nb_beds ? `AND nb_beds >= ${query.min_nb_beds} ` : "";
-    sql += query.min_price ? `AND price >= ${query.min_price} ` : "";
-    sql += query.postalcode
-      ? `AND postalcode LIKE '${query.postalcode}%' `
-      : "";
+    sql +=
+      query.max_price !== undefined ? `AND price <= ${query.max_price} ` : "";
+    sql +=
+      query.min_nb_beds !== undefined
+        ? `AND nb_beds >= ${query.min_nb_beds} `
+        : "";
+    sql +=
+      query.min_price !== undefined ? `AND price >= ${query.min_price} ` : "";
+    sql +=
+      query.postalcode !== undefined
+        ? `AND postalcode LIKE '${query.postalcode}%' `
+        : "";
 
     //sql += `LIMIT ${limit_min}, ${limit_max} `;
     return new Promise((resolve, reject) => {
@@ -76,7 +82,6 @@ class RentalsDao {
 
   async putRentalById(rentalId: string, rental: Rental): Promise<string> {
     const item = [
-      rentalId,
       rental.city,
       rental.postalcode,
       rental.price,
@@ -88,7 +93,7 @@ class RentalsDao {
     ];
     const { connection, database } = DatabaseService;
     return new Promise((resolve, reject) => {
-      const sql = `UPDATE ${database}.rentals SET id = ?, city = ?, postalcode = ?, price = ?, nb_beds = ?, nb_baths = ?, rating = ?, owner = ?, description = ? WHERE id = "${rentalId}"`;
+      const sql = `UPDATE ${database}.rentals SET city = ?, postalcode = ?, price = ?, nb_beds = ?, nb_baths = ?, rating = ?, owner = ?, description = ? WHERE id = "${rentalId}"`;
       connection.query(sql, item, (err, result) => {
         if (err) reject(err);
         else resolve(rentalId);
