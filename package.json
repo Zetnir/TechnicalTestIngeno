@@ -15,8 +15,7 @@
     "express": "^4.17.2",
     "mysql2": "^2.3.3",
     "nanoid": "^3.1.30",
-    "nodemon": "^2.0.15",
-    "tsc": "^2.0.3"
+    "nodemon": "^2.0.15"
   },
   "devDependencies": {
     "@types/chai": "^4.3.0",

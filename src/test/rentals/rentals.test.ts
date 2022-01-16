@@ -1,4 +1,5 @@
 import { expect } from "chai";
+import { after } from "mocha";
 import supertest from "supertest";
 import Rental from "../../components/rentals/models/rentals.model";
 
@@ -545,5 +546,9 @@ describe("Rental routes", async () => {
             expect(res.body.errors).to.not.be.empty;
           });
       });
+  });
+
+  after(async () => {
+    request.get("initializeDB");
   });
 });
