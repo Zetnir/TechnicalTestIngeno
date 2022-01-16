@@ -31,15 +31,33 @@ de serveur MySQL un utilisateur avec les informations contenus dans src/db.ts
 
 ## Installation
 
-Installation des dépendances
+- Installation des dépendances
 
 `npm install`
 
-`npm install typescript`
+- Commande pour generer le code javascript à partir du code typescript
 
-`npm install ts-node`
+`npx tsc`
+
+- Commande pour démarer le serveur
+
+`npm start`
+
+_Il faut generer le code javascript avant de lancer le serveur, car le code est en typescript hors_
+_nodemon compile uniquement du javascript_
+
+- Commande pour démarer les tests ( pour que les tests fonctionne il faut que le serveur soit lancé)
+
+`npm test`
+
+- Afin de commencer à realiser des requêtes qui va modifier la base de donnée il faut d'abord
+  l'initialiser avec la requête suivante :
+
+`curl --request GET localhost:8080/initializeDB`
 
 ## FAQ
+
+...
 
 ## Contribution
 
@@ -48,75 +66,3 @@ Ce code a été entièrement écrit par Ludovic Bonheur
 ## License
 
 Pas de license
-
-- Introduction
-- Requirements
-- Recommended modules
-- Installation
-- Configuration
-- Troubleshooting
-- FAQ
-- Maintainers
-
-## Why yarn?
-
-- Less generated files
-- More efficient on loading packages
-- Better performance
-
-## Why typescript ?
-
-Better for type management, testing and architectural consistency with the database
-
-## Nodemon
-
-Helps with developpement : reload app on file change
-
-## Concurrently
-
-Enable the use of tsc -w to convert typescript to javascript on change and nodemon to reload app on change at the same time
-
-## ~~Csv-Parse~~
-
-~~Should not use because we use DB~~
-~~https://npmcompare.com/compare/csv,csv-parse,csv-parser,fast-csv~~
-
-## Bon exemple d'architecture:
-
-- Services
-- Middleware
-- Controllers
-- Models (Interfaces)
-
-https://www.toptal.com/express-js/nodejs-typescript-rest-api-pt-2
-
-## ~~Nanoid~~
-
-~~Give an id to element but shouldn't use because DB already give id~~
-
-- ~~Small~~
-- ~~Fast~~
-- ~~Safe~~
-
-https://github.com/ai/nanoid/
-
-## MySQL for Database
-
-Pros :
-
-- Better performance than csv read/write
-- Easier way to filter data
-
-Cons :
-
-- Need to install MySQL to run the test
-- Need to create a user with login : "test" and password : "123456" for testing
-
-## MySQL Fix privilege error
-
-~~Execute this two lines into the query in MySQL Workbench :~~
-
-~~`ALTER USER 'test'@'localhost' IDENTIFIED WITH mysql_native_password BY '123456';`~~
-~~`flush privileges;`~~
-
-Not safe, better use mysql2 which doesn't have this issue
