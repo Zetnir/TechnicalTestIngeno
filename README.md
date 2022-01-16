@@ -27,7 +27,7 @@ de serveur MySQL un utilisateur avec les informations contenus dans src/db.ts
 - host: "localhost"
 - user: "test"
 - password: "123456"
-- database: _Il n'est pas necessaire de creer une base de donnée pour le moement (On vera par la suite)_
+- database: _Il n'est pas necessaire de creer une base de donnée pour le moment (On vera par la suite)_
 
 ## Installation
 
