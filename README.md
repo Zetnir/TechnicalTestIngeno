@@ -37,6 +37,8 @@ Installation des dépendances
 
 `npm install typescript`
 
+`npm install ts-node`
+
 ## FAQ
 
 ## Contribution
